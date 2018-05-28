@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/holo_blue_bright"
+    android:padding="10dp">
+
+
+    <TextView
+        android:id="@+id/textViewTenCV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="27dp"
+        android:text="Tên Công Việc"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="@android:color/background_dark"
+        android:textColorLink="@color/colorPrimary" />
+
+    <EditText
+        android:id="@+id/editTextCV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textViewTenCV"
+        android:layout_below="@+id/textViewTenCV"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <Button
+        android:id="@+id/btnThem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btnHuy"
+        android:layout_alignBottom="@+id/btnHuy"
+        android:layout_alignStart="@+id/editTextCV"
+        android:background="@android:color/holo_red_light"
+        android:text="Thêm"
+        android:textColor="@android:color/black" />
+
+    <Button
+        android:id="@+id/btnHuy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextCV"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="28dp"
+        android:layout_toEndOf="@+id/btnThem"
+        android:text="Hủy"
+        tools:background="@android:color/darker_gray" />
+</RelativeLayout>
