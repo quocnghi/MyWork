@@ -1,5 +1,6 @@
 package com.example.admin.mywork;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -15,11 +17,11 @@ import java.util.List;
  */
 
 public class CongViecAdapter extends BaseAdapter {
-    private Context context;
+    private Home context;
     private int layout;
     private List<CongViec> congViecList;
 
-    public CongViecAdapter(Context context, int layout, List<CongViec> congViecList) {
+    public CongViecAdapter(Home context, int layout, List<CongViec> congViecList) {
         this.context = context;
         this.layout = layout;
         this.congViecList = congViecList;
@@ -63,9 +65,25 @@ public class CongViecAdapter extends BaseAdapter {
 
         }else {
             holder = (ViewHolder) view.getTag();
+
         }
-        CongViec congViec = congViecList.get(i);
+        final CongViec congViec = congViecList.get(i);
         holder.txtTen.setText(congViec.getTenCV());
+
+        //bắt sự kiện nút edit và delete
+        holder.imgEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                context.DialogSuaCV(congViec.getTenCV(),congViec.getIdCV());
+            }
+        });
+
+        holder.imgDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            context.DialogXoaCV(congViec.getTenCV(), congViec.getIdCV());
+            }
+        });
 
         return view;
     }

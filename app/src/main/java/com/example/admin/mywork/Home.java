@@ -1,12 +1,15 @@
 package com.example.admin.mywork;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -20,7 +23,7 @@ public class Home extends AppCompatActivity {
     ArrayList<CongViec> arrayCongViec;
     CongViecAdapter adapter;
 
-    @Override
+    @Override   //database
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
@@ -37,12 +40,68 @@ public class Home extends AppCompatActivity {
         //tạo bảng
         database.QueryData("CREATE TABLE IF NOT EXISTS CongViec(Id INTEGER PRIMARY KEY AUTOINCREMENT, TenCV VARCHAR(200))");
 
-        //INSERT database
+        // INSERT database code
 //        database.QueryData("INSERT INTO CongViec VALUES(null,'Đi Học') ");
 
 
 
         GetdataCongViec();
+    }
+    //dialog xóa
+    public void DialogXoaCV(final String tencv, final int id){
+        AlertDialog.Builder dialogXoa = new AlertDialog.Builder(this);
+        dialogXoa.setMessage("Bạn có muốn xóa" +tencv+ "không ?");
+        dialogXoa.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                database.QueryData("DELETE FROM CongViec WHERE Id = '"+ id +"'");
+                Toast.makeText(Home.this, "Đã Xóa" + tencv, Toast.LENGTH_SHORT).show();
+                GetdataCongViec(); //load lại dữ liệu
+            }
+        });
+
+        dialogXoa.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        dialogXoa.show();
+    }
+
+    //function dialog sửa
+    public void DialogSuaCV(String ten, final int id){
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_sua);
+
+        final EditText edtTenCv = (EditText) dialog.findViewById(R.id.editTextTenCvEdit);
+        Button btnXacNhan = (Button) dialog.findViewById(R.id.buttonXacNhanEdit);
+        Button btnHuy = (Button) dialog.findViewById(R.id.buttonHuyEdit);
+
+        edtTenCv.setText(ten);
+
+        btnXacNhan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String tenmoi = edtTenCv.getText().toString();
+                database.QueryData("UPDATE CongViec SET TenCV = '"+ tenmoi +"' WHERE Id = '"+ id +"' ");
+                Toast.makeText(Home.this,"Đã cập nhật", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+                GetdataCongViec(); //thấy dữ liệu đã cập nhật
+            }
+        });
+
+        btnHuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+
+
+        dialog.show();
     }
 
     private void GetdataCongViec(){
@@ -98,7 +157,7 @@ public class Home extends AppCompatActivity {
                     Toast.makeText(Home.this,"Vui lòng nhập tên công việc!", Toast.LENGTH_SHORT).show();
                 }else {
                     database.QueryData("INSERT INTO CongViec VALUES(null,'"+tencv+"') ");  //tách chuỗi để nối biến tencv
-                    Toast.makeText(Home.this,"Vui lòng nhập tên công việc!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Home.this,"Đã thêm "+ tencv +"", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                     GetdataCongViec();
                 }
